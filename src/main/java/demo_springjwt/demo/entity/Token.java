@@ -1,5 +1,6 @@
 package demo_springjwt.demo.entity;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,8 +11,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "t_token")
-@Getter
-@Setter
+@Data
 public class Token extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 

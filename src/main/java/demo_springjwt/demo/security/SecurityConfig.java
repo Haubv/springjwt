@@ -1,6 +1,7 @@
 package demo_springjwt.demo.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,12 +21,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .cors() // Ngăn chặn request từ một domain khác
             .and()
         .authorizeRequests()
-            .antMatchers("/login", "/register").permitAll()
-        	.antMatchers("/admin").hasAuthority("ADMIN")
-        	.antMatchers("/free").hasAnyAuthority("ADMIN", "USER", "AUTHOR", "EDITOR")
-        	.antMatchers("/author").hasAnyAuthority("AUTHOR")
-        	.antMatchers("/user").hasAnyAuthority("USER")
-        	.antMatchers("/editor").hasAnyAuthority("EDITOR")
+            .antMatchers("/acc/login", "/acc/register", "/book").permitAll()
+//        	.antMatchers("/admin", "/book", "/book/**", "/acc/**", "/acc").hasAuthority("ADMIN")
+//        	.antMatchers("/acc/free").hasAnyAuthority("ADMIN", "USER", "AUTHOR", "EDITOR")
+        	.antMatchers("/book/**", "/book").hasAnyAuthority("AUTHOR","ADMIN")
+//        	.antMatchers("/acc/**").hasAnyAuthority("USER")
+//        	.antMatchers("/editor").hasAnyAuthority("EDITOR")
             .anyRequest().authenticated(); // Tất cả các request khác đều cần phải xác thực mới được truy cập
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
