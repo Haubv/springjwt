@@ -2,6 +2,7 @@ package demo_springjwt.demo.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,6 @@ import demo_springjwt.demo.service.BookService;
 @Service
 public class BookServiceImpl implements BookService {
 	
-	
-	
 	@Autowired
 	private BookRepository bookRepository;
 	
@@ -26,33 +25,58 @@ public class BookServiceImpl implements BookService {
 	private TypeOfBookRepository typeOfBookRepository;
 
 	@Override
-	public Response createBook(Book book) {
-		if(book.getName() == null || book.getTypeBook() == null) {
-			Response.build().message("Không được để trống tên sách/thể loại sách");
+	public Response createBook(BookDto bookDto) {
+		TypeOfBook typeBook = new TypeOfBook();
+		if(bookDto.getTypeBookId() != null) {
+			Optional<TypeOfBook> type = typeOfBookRepository.findById(bookDto.getTypeBookId());
+			if(type.isPresent()) {
+				typeBook.setId(type.get().getId());
+			}
 		}
+		Book book = BookDto.toEntity(bookDto, typeBook);
+//		if(book.getName() == null || book.getTypeBook() == null) {
+//			Response.build().message("Không được để trống tên sách/thể loại sách");
+//		}
+		bookRepository.save(book);
 		return Response.build().ok().data(bookRepository.save(book));
 	}
 
 	@Override
-	public Response updateBook(long id, Book book) {
-		Book fromDB = bookRepository.findById(id).orElse(null);
-		if(fromDB == null) {
+	public Response updateBook(long id, BookDto bookDto) {
+		Optional<TypeOfBook> typeBook = typeOfBookRepository.findById(bookDto.getTypeBookId());
+		Book book = bookRepository.findById(id).orElse(null);
+		if(book == null) {
 			return Response.build().message("Không tìm thấy sách có id như trên");
 		}
-		fromDB.setName(book.getName());
-		if(book.getTypeBook() != null) {
-			Optional<TypeOfBook> typeBook = typeOfBookRepository.findById(book.getTypeBook().getId());
+		if(bookDto.getTypeBook() != null) {
 			if(typeBook.isPresent()) {
-				fromDB.setTypeBook(typeBook.get());
+				book.setTypeBook(typeBook.get());
 			}
 		}
-		return Response.build().ok().data(BookDto.toDTO(bookRepository.save(fromDB)));
+		
+		if(bookDto.getName() != null) {
+			book.setName(bookDto.getName());
+		}
+		
+		if(bookDto.getAuthor() != null) {
+			book.setAuthor(bookDto.getAuthor());
+		}
+		
+		if(bookDto.getPublishedDate() != null) {
+			book.setPublishedDate(bookDto.getPublishedDate());
+		}
+		
+		bookRepository.save(book);
+		return Response.build().ok().data(BookDto.toDTO(book));
 	}
 
 	@Override
 	public Response findById(long id) {
-		
-		return  Response.build().ok().data(bookRepository.findById(id).orElse(null));
+		Optional<Book> book = bookRepository.findById(id);
+		if(book.isEmpty()) {
+			return Response.build().message("Không tìm thấy sách có id như trên");
+		}
+		return  Response.build().ok().data(BookDto.toDTO(book.get()));
 	}
 
 	@Override
@@ -68,11 +92,16 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public List<Book> findAll() {
+	public List<BookDto> findAll() {
 		List<Book> books = bookRepository.findAll();
-		return books ;
+		return books.stream().map(BookDto::toDTO).collect(Collectors.toList());
 	}
 
-
-
+	@Override
+	public BookDto saveBook(BookDto bookDto) {
+		Optional<TypeOfBook> typeBook = typeOfBookRepository.findById(bookDto.getTypeBookId());
+		Book book = bookRepository.save(BookDto.toEntity(bookDto, typeBook.get()));
+		return BookDto.toDTO(book);
+	}
+	
 }

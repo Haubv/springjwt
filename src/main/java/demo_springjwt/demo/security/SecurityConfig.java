@@ -1,35 +1,66 @@
 package demo_springjwt.demo.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import demo_springjwt.demo.service.impl.UserDetailsServiceImpl;
+
+@Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(
+    // securedEnabled = true,
+    // jsr250Enabled = true,
+    prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+	
+  @Autowired
+  UserDetailsServiceImpl userDetailsService;
 
-    @Autowired
-    private JwtRequestFilter jwtRequestFilter;
+  @Autowired
+  private AuthEntryPointJwt unauthorizedHandler;
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-    	http
-        .cors() // Ngăn chặn request từ một domain khác
-            .and()
-        .authorizeRequests()
-            .antMatchers("/acc/login", "/acc/register", "/book").permitAll()
-//        	.antMatchers("/admin", "/book", "/book/**", "/acc/**", "/acc").hasAuthority("ADMIN")
-//        	.antMatchers("/acc/free").hasAnyAuthority("ADMIN", "USER", "AUTHOR", "EDITOR")
-        	.antMatchers("/book/**", "/book").hasAnyAuthority("AUTHOR","ADMIN")
-//        	.antMatchers("/acc/**").hasAnyAuthority("USER")
-//        	.antMatchers("/editor").hasAnyAuthority("EDITOR")
-            .anyRequest().authenticated(); // Tất cả các request khác đều cần phải xác thực mới được truy cập
+  @Bean
+  public JwtRequestFilter authenticationJwtTokenFilter() {
+    return new JwtRequestFilter();
+  }
 
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-                .csrf().disable();
-    }
+  @Override
+  public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+    authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+  }
+
+  @Bean
+  @Override
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
+
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.cors().and().csrf().disable()
+      .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+      .authorizeRequests().antMatchers("/api/auth/**").permitAll()
+      .antMatchers("/api/test/**").permitAll()
+      .antMatchers("/book", "/book/**").hasAnyAuthority("ROLE_USER") //hasAnyAuthority("USER")
+      .anyRequest().authenticated();
+
+    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+  }
 }

@@ -15,11 +15,11 @@ public class BaseController {
 	private UserRepository userRepository;
 	
 	protected Optional<UserDto> getCurrentUser() {
-		User user = this.getCurrentUserEntity();
-		return Optional.of(UserDto.toDTO(user));
+		Optional<User> user = this.getCurrentUserEntity();
+		return Optional.of(UserDto.toDTO(user.get()));
 	}
 	
-	protected User getCurrentUserEntity() {
+	protected Optional<User> getCurrentUserEntity() {
 		Authentication userAuthentication = SecurityContextHolder.getContext().getAuthentication();
 		if (userAuthentication == null) {
 			return null;

@@ -2,6 +2,8 @@ package demo_springjwt.demo.service;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 import demo_springjwt.demo.entity.User;
 import demo_springjwt.demo.response.Response;
 import demo_springjwt.demo.security.UserPrincipal;
@@ -19,4 +21,6 @@ public interface UserService {
     Response deleteById(long id);
     
     List<User> findAll();
+
+	UserDetails loadUserByUsername(String username);
 }
