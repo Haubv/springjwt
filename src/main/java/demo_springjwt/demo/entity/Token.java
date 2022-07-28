@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
-@Table(name = "t_token")
+@Table(name = "tokens")
 @Data
 public class Token extends BaseEntity {
 	private static final long serialVersionUID = 1L;

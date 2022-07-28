@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "t_type_book")	//Bảng typeBook.
+@Table(name = "type_of_book")	
 @Data
 public class TypeOfBook extends BaseEntity {
 

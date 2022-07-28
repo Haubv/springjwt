@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "t_book")
+@Table(name = "books")
 @Data
 public class Book extends BaseEntity {
 	

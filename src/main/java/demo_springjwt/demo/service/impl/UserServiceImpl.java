@@ -110,13 +110,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserPrincipal findByUsername(String username) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

@@ -6,7 +6,7 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "t_user_book")
+@Table(name = "user_book")
 @Data
 public class UserBook extends BaseEntity {
 	
@@ -15,5 +15,6 @@ public class UserBook extends BaseEntity {
 	
 	private boolean isRead;
 	private int pageReached;
+	
 
 }
