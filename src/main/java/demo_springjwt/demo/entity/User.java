@@ -23,7 +23,7 @@ uniqueConstraints = {
 public class User extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 	
-	@Column(unique = true)
+	  @Column(unique = true)
 	  @NotBlank
 	  @Size(max = 20)
 	  private String username;
@@ -38,15 +38,15 @@ public class User extends BaseEntity {
 	  private String password;
 	 
 	  public User() {
+	  
 	  }
 	  
 	  public User(String username, String email, String password) {
 		    this.username = username;
 		    this.email = email;
 		    this.password = password;
-		  }
-
-    
+	  
+	  }
     
 	  @ManyToMany(fetch = FetchType.LAZY)
 	  @JoinTable(  name = "user_roles", 
@@ -56,6 +56,5 @@ public class User extends BaseEntity {
     
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 //    private Set<UserBook> userBooks = new HashSet<>();
-    
-    
+        
 }

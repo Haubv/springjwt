@@ -9,5 +9,7 @@ import demo_springjwt.demo.entity.TypeOfBook;
 
 @Repository
 public interface TypeOfBookRepository extends JpaRepository<TypeOfBook, Long> {
+	
 	List<TypeOfBook> findAll();
+
 }

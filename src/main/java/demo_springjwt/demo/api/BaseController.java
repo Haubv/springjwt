@@ -11,6 +11,7 @@ import demo_springjwt.demo.entity.User;
 import demo_springjwt.demo.repository.UserRepository;
 
 public class BaseController {
+	
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -26,5 +27,6 @@ public class BaseController {
 		}
 		String principal = userAuthentication.getName();
 		return this.userRepository.findByUsername(principal);
+		
 	}
 }
