@@ -7,5 +7,5 @@ import demo_springjwt.demo.entity.UserBook;
 
 @Repository
 public interface UserBookRepository extends JpaRepository<UserBook, Long> {
-	
+	boolean existsByUserIdAndBookId(Long userId, Long bookId);
 }

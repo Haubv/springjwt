@@ -1,7 +1,10 @@
 package demo_springjwt.demo.entity;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -19,7 +22,10 @@ uniqueConstraints = {
   @UniqueConstraint(columnNames = "username"),
   @UniqueConstraint(columnNames = "email") 
 })
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class User extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 	
@@ -37,9 +43,6 @@ public class User extends BaseEntity {
 	  @Size(max = 120)
 	  private String password;
 	 
-	  public User() {
-	  
-	  }
 	  
 	  public User(String username, String email, String password) {
 		    this.username = username;

@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 import demo_springjwt.demo.dto.BookDto;
 import demo_springjwt.demo.entity.Book;
+import demo_springjwt.demo.entity.FileBook;
 import demo_springjwt.demo.entity.TypeOfBook;
 import demo_springjwt.demo.repository.BookRepository;
+import demo_springjwt.demo.repository.FileBookRepository;
 import demo_springjwt.demo.repository.TypeOfBookRepository;
 import demo_springjwt.demo.response.Response;
 import demo_springjwt.demo.service.BookService;
@@ -23,6 +25,9 @@ public class BookServiceImpl implements BookService {
 	
 	@Autowired
 	private TypeOfBookRepository typeOfBookRepository;
+	
+	@Autowired
+	private FileBookRepository fileBookRepository;
 
 	@Override
 	public Response createBook(BookDto bookDto) {
@@ -33,7 +38,8 @@ public class BookServiceImpl implements BookService {
 				typeBook.setId(type.get().getId());
 			}
 		}
-		Book book = BookDto.toEntity(bookDto, typeBook);
+		FileBook fileBook = fileBookRepository.findById(bookDto.getFileBookId()).orElse(null);
+		Book book = BookDto.toEntity(bookDto, typeBook, fileBook);
 //		if(book.getName() == null || book.getTypeBook() == null) {
 //			Response.build().message("Không được để trống tên sách/thể loại sách");
 //		}
@@ -99,9 +105,12 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public BookDto saveBook(BookDto bookDto) {
-		Optional<TypeOfBook> typeBook = typeOfBookRepository.findById(bookDto.getTypeBookId());
-		Book book = bookRepository.save(BookDto.toEntity(bookDto, typeBook.get()));
+		Book book = new Book();
+		TypeOfBook typeBook = typeOfBookRepository.findById(bookDto.getTypeBookId()).orElse(null);
+		FileBook fileBook = fileBookRepository.findById(bookDto.getFileBookId()).orElse(null);
+		book = bookRepository.save(BookDto.toEntity(bookDto, typeBook, fileBook));
 		return BookDto.toDTO(book);
 	}
-	
+
+
 }

@@ -1,12 +1,21 @@
 package demo_springjwt.demo.entity;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+
+
 import javax.persistence.*;
 
 
 @Entity
 @Table(name = "roles")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Role extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
