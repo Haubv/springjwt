@@ -32,24 +32,24 @@ public class UserPrincipal implements UserDetails {
 
 	  public UserPrincipal(Long id, String username, String email, String password,
 	      Collection<? extends GrantedAuthority> authorities) {
-	    this.id = id;
-	    this.username = username;
-	    this.email = email;
-	    this.password = password;
-	    this.authorities = authorities;
+		    this.id = id;
+		    this.username = username;
+		    this.email = email;
+		    this.password = password;
+		    this.authorities = authorities;
 	  }
 
 	  public static UserPrincipal build(User user) {
-	    List<GrantedAuthority> authorities = user.getRoles().stream()
-	        .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-	        .collect(Collectors.toList());
-
-	    return new UserPrincipal(
-	        user.getId(), 
-	        user.getUsername(), 
-	        user.getEmail(),
-	        user.getPassword(), 
-	        authorities);
+		    List<GrantedAuthority> authorities = user.getRoles().stream()
+		        .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+		        .collect(Collectors.toList());
+	
+		    return new UserPrincipal(
+		        user.getId(), 
+		        user.getUsername(), 
+		        user.getEmail(),
+		        user.getPassword(), 
+		        authorities);
 	  }
 
 	  @Override

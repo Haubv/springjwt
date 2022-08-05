@@ -44,8 +44,8 @@ public class FileBookController extends BaseController{
 	
 	
 	@PostMapping
-	public FileBook saveFileBook(@RequestParam("file") MultipartFile file, @RequestParam("desc") String desc) {
-		return fileBookService.saveFileBook(file, desc);
+	public FileBook saveFileBook(@RequestParam("file") MultipartFile file) {
+		return fileBookService.saveFileBook(file);
 	}
 	
 	@GetMapping("/{id}")

@@ -3,6 +3,7 @@ package demo_springjwt.demo.api;
 //import java.io.File;
 //import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 //import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -26,8 +27,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import demo_springjwt.demo.dto.BookDto;
 import demo_springjwt.demo.entity.Book;
+import demo_springjwt.demo.entity.FileBook;
 //import demo_springjwt.demo.entity.TypeOfBook;
 import demo_springjwt.demo.repository.BookRepository;
+import demo_springjwt.demo.repository.FileBookRepository;
 //import demo_springjwt.demo.repository.TypeOfBookRepository;
 import demo_springjwt.demo.response.Response;
 import demo_springjwt.demo.service.BookService;
@@ -43,6 +46,9 @@ public class BookController {
 	@Autowired
 	private BookService bookService;
 	
+	@Autowired
+	private FileBookRepository fileBookRepository;
+	
 	
 	@Value("${upload.path}")
     private String fileUpload;
@@ -57,9 +63,13 @@ public class BookController {
 		return Response.build().ok().data(bookService.updateBook(id, bookDto));
 	}
 	
-	@PutMapping
-	public Response saveBook( @RequestBody BookDto bookDto) {
-		return Response.build().ok().data(bookService.saveBook(bookDto));
+	@PutMapping("/{id}")
+	public Response saveBook(@PathVariable long id, @RequestBody BookDto bookDto) {
+		Optional<FileBook> fileBook = fileBookRepository.findById(id);
+		if(fileBook.isPresent()) {
+			return Response.build().ok().data(bookService.saveBook(bookDto));
+		}
+		return null;
 	}
 	
 	@GetMapping

@@ -13,12 +13,13 @@ public class BookDto {
 	
 	private Long id;
 	private String name;
+	private String author;
+	private String publishedDate;
 	private Long typeBookId;
 	private String typeBook;
-	private String publishedDate;
-	private String author;
 	private Long fileBookId;
 	private String pathFile;
+	private String fileName;
 //	private MultipartFile fileName; 
 	
 	public static BookDto toDTO(Book book) {

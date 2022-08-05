@@ -14,6 +14,5 @@ public class FileBook extends BaseEntity {
 	
 	private String path;
 	private String description;
-	
 
 }

@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
 			 user.setDeleted(true);
 			 userRepository.save(user);
 		 }
-	return Response.build().message("Deleted");
+		 return Response.build().message("Deleted");
 	}
 
 	@Override

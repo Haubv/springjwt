@@ -27,7 +27,7 @@ public class FileBookServiceImpl implements FileBookService {
     private String fileUpload;
 
 	@Override
-	public FileBook saveFileBook(MultipartFile file, String desc) {
+	public FileBook saveFileBook(MultipartFile file) {
 		if(file.isEmpty()) {
 			return null;
 		}
@@ -36,7 +36,6 @@ public class FileBookServiceImpl implements FileBookService {
         try {
             FileCopyUtils.copy(file.getBytes(), new File(this.fileUpload + path));
             result.setPath(path);
-            result.setDescription(desc);
             fileBookRepository.save(result);
         } catch (IOException e) {
             e.printStackTrace();

@@ -50,30 +50,43 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public Response updateBook(long id, BookDto bookDto) {
 		Optional<TypeOfBook> typeBook = typeOfBookRepository.findById(bookDto.getTypeBookId());
+		Optional<FileBook> fileBook = fileBookRepository.findById(bookDto.getFileBookId());
 		Book book = bookRepository.findById(id).orElse(null);
-		if(book == null) {
-			return Response.build().message("Không tìm thấy sách có id như trên");
-		}
-		if(bookDto.getTypeBook() != null) {
-			if(typeBook.isPresent()) {
-				book.setTypeBook(typeBook.get());
+		
+		if (bookRepository.findByFileBookId(bookDto.getFileBookId()).isPresent()) {
+			return null;
+			
+		} else {
+			if (book == null) {
+				return Response.build().message("Không tìm thấy sách có id như trên");
 			}
+			
+			if (bookDto.getTypeBookId() != null) {
+				
+					book.setTypeBook(typeBook.get());
+				
+			}
+			
+			if (bookDto.getFileBookId() != null) {
+					book.setFileBook(fileBook.get());
+			}	
+			
+			if (bookDto.getName() != null) {
+				book.setName(bookDto.getName());
+			}
+			
+			if (bookDto.getAuthor() != null) {
+				book.setAuthor(bookDto.getAuthor());
+			}
+			
+			if (bookDto.getPublishedDate() != null) {
+				book.setPublishedDate(bookDto.getPublishedDate());
+			}
+			
+			bookRepository.save(book);
+			return Response.build().ok().data(BookDto.toDTO(book));
 		}
 		
-		if(bookDto.getName() != null) {
-			book.setName(bookDto.getName());
-		}
-		
-		if(bookDto.getAuthor() != null) {
-			book.setAuthor(bookDto.getAuthor());
-		}
-		
-		if(bookDto.getPublishedDate() != null) {
-			book.setPublishedDate(bookDto.getPublishedDate());
-		}
-		
-		bookRepository.save(book);
-		return Response.build().ok().data(BookDto.toDTO(book));
 	}
 
 	@Override

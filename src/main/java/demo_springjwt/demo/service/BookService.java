@@ -20,6 +20,5 @@ public interface BookService {
 	List<BookDto> findAll();	
 	
 	BookDto saveBook(BookDto bookDto);
-	
-	
+
 }

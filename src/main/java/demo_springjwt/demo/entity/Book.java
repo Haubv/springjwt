@@ -26,16 +26,16 @@ public class Book extends BaseEntity {
 	
 	@Column(name = "name", unique = true)
 	private String name;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "type_book_id")
-	private TypeOfBook typeBook;
 	private String publishedDate;
 	private String author;
 	private String fileName;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "type_book_id")
+	private TypeOfBook typeBook;
+	
 	@OneToOne
-    @JoinColumn(name = "file_book_id")
+    @JoinColumn(name = "file_book_id", unique =true)
     private FileBook fileBook;
 	
 	

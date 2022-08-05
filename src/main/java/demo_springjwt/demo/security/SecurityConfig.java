@@ -24,46 +24,46 @@ import demo_springjwt.demo.service.impl.UserDetailsServiceImpl;
     prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
-  @Autowired
-  UserDetailsServiceImpl userDetailsService;
-
-  @Autowired
-  private AuthEntryPointJwt unauthorizedHandler;
+	  @Autowired
+	  UserDetailsServiceImpl userDetailsService;
+	
+	  @Autowired
+	  private AuthEntryPointJwt unauthorizedHandler;
 
   @Bean
   JwtRequestFilter authenticationJwtTokenFilter() {
-    return new JwtRequestFilter();
+	    return new JwtRequestFilter();
   }
 
   @Override
   public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-    authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-  }
-
-  @Bean
-  @Override
-  public AuthenticationManager authenticationManagerBean() throws Exception {
-    return super.authenticationManagerBean();
-  }
-
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
-
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-	  
-    http.cors().and().csrf().disable()
-      .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-      .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-      .antMatchers("/api/test/**").permitAll()
-      .antMatchers("/book").hasAnyAuthority("ROLE_USER") //hasAnyAuthority("USER")
-      .antMatchers("/book/**").hasAnyAuthority("ROLE_ADMIN","ROLE_MODERATOR")
-      .anyRequest().authenticated();
-
-    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-    
-  }
+	    authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+	  }
+	
+	  @Bean
+	  @Override
+	  public AuthenticationManager authenticationManagerBean() throws Exception {
+	    return super.authenticationManagerBean();
+	  }
+	
+	  @Bean
+	  public PasswordEncoder passwordEncoder() {
+	    return new BCryptPasswordEncoder();
+	  }
+	
+	  @Override
+	  protected void configure(HttpSecurity http) throws Exception {
+		  
+	    http.cors().and().csrf().disable()
+	      .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+	      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+	      .authorizeRequests().antMatchers("/api/auth/**").permitAll()
+	      .antMatchers("/api/test/**").permitAll()
+	      .antMatchers("/book").hasAnyAuthority("ROLE_USER") //hasAnyAuthority("USER")
+	      .antMatchers("/book/**").hasAnyAuthority("ROLE_ADMIN","ROLE_MODERATOR")
+	      .anyRequest().authenticated();
+	
+	    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+	    
+	  }
 }
