@@ -53,7 +53,7 @@ public class BookServiceImpl implements BookService {
 		Optional<FileBook> fileBook = fileBookRepository.findById(bookDto.getFileBookId());
 		Book book = bookRepository.findById(id).orElse(null);
 		
-		if (bookRepository.findByFileBookId(bookDto.getFileBookId()).isPresent()) {
+		if (bookRepository.existsByFileBookId(bookDto.getFileBookId())) {
 			return null;
 			
 		} else {
@@ -62,12 +62,10 @@ public class BookServiceImpl implements BookService {
 			}
 			
 			if (bookDto.getTypeBookId() != null) {
-				
 					book.setTypeBook(typeBook.get());
-				
 			}
 			
-			if (bookDto.getFileBookId() != null) {
+			if (fileBook.isPresent()) {
 					book.setFileBook(fileBook.get());
 			}	
 			

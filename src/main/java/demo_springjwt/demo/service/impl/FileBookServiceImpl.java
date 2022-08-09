@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,12 @@ public class FileBookServiceImpl implements FileBookService {
         }
 		return result;
 	}
+	
+	@Override
+	public List<FileBook> findAll() {
+		List<FileBook> fileBooks = fileBookRepository.findAll();
+		return fileBooks;
+	}
 
 	@Override
 	public File loadFileBook(long id) {
@@ -54,5 +61,5 @@ public class FileBookServiceImpl implements FileBookService {
         
         return destination.toFile().exists() ? destination.toFile() : null;
 	}
-
+	
 }

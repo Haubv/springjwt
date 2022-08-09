@@ -15,4 +15,5 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 	  	Optional<Book> findById(Long id);
 	    boolean existsByName(String name);
 	    Optional<Book> findByFileBookId(Long id);
+	    boolean existsByFileBookId(Long id);
 }

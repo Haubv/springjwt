@@ -2,6 +2,7 @@ package demo_springjwt.demo.api;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.io.FileUtils;
@@ -24,6 +25,7 @@ import demo_springjwt.demo.dto.UserDto;
 import demo_springjwt.demo.entity.Book;
 import demo_springjwt.demo.entity.FileBook;
 import demo_springjwt.demo.repository.BookRepository;
+import demo_springjwt.demo.repository.FileBookRepository;
 //import demo_springjwt.demo.service.BookService;
 import demo_springjwt.demo.service.FileBookService;
 import demo_springjwt.demo.service.UserBookService;
@@ -42,10 +44,19 @@ public class FileBookController extends BaseController{
 	@Autowired
 	private UserBookService userBookService;
 	
+	@Autowired
+	private FileBookRepository fileBookRepository;
+	
 	
 	@PostMapping
 	public FileBook saveFileBook(@RequestParam("file") MultipartFile file) {
 		return fileBookService.saveFileBook(file);
+	}
+	
+	@GetMapping
+	public List<FileBook> findAll() {
+		List<FileBook> fileBooks = fileBookRepository.findAll();
+		return fileBooks;
 	}
 	
 	@GetMapping("/{id}")

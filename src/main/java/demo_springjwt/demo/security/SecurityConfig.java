@@ -3,6 +3,7 @@ package demo_springjwt.demo.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -47,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	  }
 	
 	  @Bean
-	  public PasswordEncoder passwordEncoder() {
+	  PasswordEncoder passwordEncoder() {
 	    return new BCryptPasswordEncoder();
 	  }
 	
@@ -60,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	      .authorizeRequests().antMatchers("/api/auth/**").permitAll()
 	      .antMatchers("/api/test/**").permitAll()
 	      .antMatchers("/book").hasAnyAuthority("ROLE_USER") //hasAnyAuthority("USER")
+	      .antMatchers(HttpMethod.GET,"/book/{id}").hasAnyAuthority("ROLE_USER") //hasAnyAuthority("USER")
 	      .antMatchers("/book/**").hasAnyAuthority("ROLE_ADMIN","ROLE_MODERATOR")
 	      .anyRequest().authenticated();
 	
