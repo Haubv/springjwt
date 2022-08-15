@@ -6,6 +6,6 @@ import demo_springjwt.demo.response.Response;
 
 public interface UserBookService {
 	
-	Response isRead(UserDto user , Book book);
+	Response markAsRead(UserDto user , Book book);
 	
 }

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -21,9 +21,8 @@ public class Role extends BaseEntity {
 
 //    private String name;
     
-    //Map với bảng user bằng ManyToMany.
-//    @ManyToMany(mappedBy = "roles")
-//    private List<User> users;
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
     
     @Enumerated(EnumType.STRING)
     @Column(length = 20)

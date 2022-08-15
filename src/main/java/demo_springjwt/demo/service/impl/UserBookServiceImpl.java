@@ -19,7 +19,7 @@ public class UserBookServiceImpl implements UserBookService{
 	private UserBookRepository userBookRepository;
 		
 	@Override
-	public Response isRead(UserDto user, Book book) {
+	public Response markAsRead(UserDto user, Book book) {
 		if(this.userBookRepository.existsByUserIdAndBookId(user.getId(), book.getId())) {
 			return null;
 		}

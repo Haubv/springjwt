@@ -33,29 +33,36 @@ public class User extends BaseEntity {
 	  @NotBlank
 	  @Size(max = 20)
 	  private String username;
+	  
+	  @NotBlank
+	  @Size(max = 120)
+	  private String password;
 
 	  @NotBlank
 	  @Size(max = 50)
 	  @Email
 	  private String email;
 
-	  @NotBlank
-	  @Size(max = 120)
-	  private String password;
-	 
 	  
 	  public User(String username, String email, String password) {
 		    this.username = username;
-		    this.email = email;
 		    this.password = password;
-	  
+		    this.email = email;
+		    
 	  }
     
 	  @ManyToMany(fetch = FetchType.LAZY)
-	  @JoinTable(  name = "user_roles", 
+	  @JoinTable(name = "user_roles", 
 	        joinColumns = @JoinColumn(name = "user_id"), 
 	        inverseJoinColumns = @JoinColumn(name = "role_id"))
 	  private Set<Role> roles = new HashSet<>();
+	  
+	  @ManyToMany
+	  @JoinTable(name = "favorites",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "book_id"))
+	  private Set<FavoriteBook> favoriteBooks = new HashSet<>();
+	  		
     
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 //    private Set<UserBook> userBooks = new HashSet<>();

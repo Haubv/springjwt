@@ -86,7 +86,7 @@ public class FileBookController extends BaseController{
         Optional<Book> book = this.bookRepository.findByFileBookId(id);
         Optional<UserDto> user = this.getCurrentUser();
         if(book.isPresent() && user.isPresent()) {
-        	userBookService.isRead(user.get(), book.get());
+        	userBookService.markAsRead(user.get(), book.get());
         }
         return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
 	}
